@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const Blog = mongoose.model(
   "Blog",
   {
-    title: { type: String },
-    content: { type: String },
+    title: { type: String, required: true },
+    content: { type: String, required: true },
   },
   "blogs"
 );

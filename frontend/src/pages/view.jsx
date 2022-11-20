@@ -11,11 +11,22 @@ export function View() {
       setPosts(json);
     })();
   }, []);
+
+  const handleDelete = async (id) => {
+    const headers = { "content-type": "application/json" };
+    await fetch(`http://localhost:3001/blog/${id}`, {
+      method: "DELETE",
+      headers,
+    })
+      .then((response) => response.json())
+      .then((response) => console.log(JSON.stringify(response)));
+    window.location.reload();
+  };
   return (
     <div>
       <Link to="/"> Home</Link>
       <div>
-        {posts.map((post) => (
+        {posts.map((post, index) => (
           <div
             style={{
               border: "2px solid",
@@ -23,9 +34,16 @@ export function View() {
               margin: "auto",
               textAlign: "center",
             }}
+            key={index}
           >
             <h2 style={{ margin: "0.2rem" }}>{post.title}</h2>
             <div>{post.content}</div>
+            <button
+              style={{ marginTop: "1rem" }}
+              onClick={() => handleDelete(post._id)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
