@@ -54,6 +54,29 @@ app.delete("/blog/:id", (req, res) => {
   });
 });
 
+app.put("/blog/:id", (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("No record with given id : " + req.params.id);
+
+  const updatedBlog = {
+    title: req.body.title,
+    content: req.body.content,
+  };
+
+  Blog.findByIdAndUpdate(
+    { _id: req.params.id },
+    { $set: updatedBlog },
+    { new: true },
+    (err, docs) => {
+      if (!err) res.send(docs);
+      else
+        console.log(
+          "Error while updating a record : " + JSON.stringify(err, undefined, 2)
+        );
+    }
+  );
+});
+
 app.listen(3001, () => {
   console.log("listening on port 3001");
 });
